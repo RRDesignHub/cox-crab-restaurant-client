@@ -7,11 +7,10 @@ import logo from "./../assets/logo_pro2.png";
 import { useCard } from "../Hooks/useCard";
 import { useAuth } from "../Hooks/useAuth";
 export const Navbar = () => {
-  const [card] = useCard();
   const { user, logoutUser } = useAuth();
   const [isOpen, setIsOpne] = useState(false);
   const [openCloseMenu, setOpenCloseMenu] = useState(true);
-
+  const [card] = useCard();
 
   const handleOpenCloseMenu = (status) => {
     setOpenCloseMenu(!status);
@@ -21,7 +20,6 @@ export const Navbar = () => {
   };
 
   const handleUserLogout = () => {
-    
     logoutUser();
   };
 
@@ -51,6 +49,45 @@ export const Navbar = () => {
           Menu
         </NavLink>
       </li>
+      <li>
+        <NavLink
+          className={({ isActive }) =>
+            isActive
+              ? "bg-transparent text-blue-50 font-semibold underline focus:bg-transparent"
+              : "text-blue-50 hover:text-[#d5e4fd] hover:underline focus:text-[#4A5568]"
+          }
+          to="/dashboard"
+        >
+          Dashboard
+        </NavLink>
+      </li>
+
+      <li>
+        <Link to="/dashboard/myCart">
+          <button className="btn bg-[#eaf4ff] text-[#001735]">
+            <HiShoppingCart className="text-xl " />
+            <div className="badge bg-[#001735] text-[#eaf4ff]">
+              {card?.length}
+            </div>
+          </button>
+        </Link>
+      </li>
+
+      <li>
+        <NavLink
+          className={({ isActive }) =>
+            isActive
+              ? "bg-transparent text-blue-50 font-semibold underline focus:bg-transparent"
+              : "text-blue-50 hover:text-[#4A5568] hover:underline focus:text-[#4A5568]"
+          }
+          to="/dashboard/reservation"
+        >
+          <button className="btn bg-[#eaf4ff] text[#001735]">
+            Book A Table
+          </button>
+        </NavLink>
+      </li>
+
       {user ? (
         <>
           <div className="relative">
@@ -106,32 +143,6 @@ export const Navbar = () => {
           </li>
         </>
       )}
-      <li>
-      <Link to="/dashboard">
-        <button className="btn bg-[#eaf4ff] text-[#001735]">
-          <HiShoppingCart className="text-xl " />
-          <div className="badge bg-[#001735] text-[#eaf4ff]">
-            {card?.length}
-          </div>
-        </button>
-      </Link>
-        
-      </li>
-
-      <li>
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "bg-transparent text-blue-50 font-semibold underline focus:bg-transparent"
-              : "text-blue-50 hover:text-[#4A5568] hover:underline focus:text-[#4A5568]"
-          }
-          to="/borrowedBooks"
-        >
-          <button className="btn bg-[#eaf4ff] text[#001735]">
-            Book A Table
-          </button>
-        </NavLink>
-      </li>
     </>
   );
   return (
@@ -149,7 +160,7 @@ export const Navbar = () => {
 
         {/* Desktop Menu */}
         <div className="flex-none hidden lg:flex">
-          <ul className="menu menu-horizontal items-center px-1 space-x-4 font-heebo">
+          <ul className="menu menu-horizontal items-center px-1 gap-0 font-heebo">
             {links}
           </ul>
         </div>

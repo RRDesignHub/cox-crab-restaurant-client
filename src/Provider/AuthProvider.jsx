@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }) => {
       if (currentUser) {
         const userEmail = { email: currentUser?.email };
 
-       
         // get jwt token from server side and set it to localstorage:
         const { data } = await axiosPublic.post("/jwt", userEmail);
         if (data?.token) {

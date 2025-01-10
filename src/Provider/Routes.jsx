@@ -16,6 +16,9 @@ import { UserHome } from "../Pages/Dashboard/UserHome";
 import { AllUsers } from "../Pages/Dashboard/AllUsers";
 import { AdminRoute } from "./AdminRoute";
 import { AddMenu } from "../Pages/Dashboard/AddMenu";
+import { ManageMenu } from "../Pages/Dashboard/ManageMenu";
+import { UpdateMenu } from "../Pages/Dashboard/UpdateMenu";
+import { Payment } from "../Pages/Dashboard/Payments/Payment";
 
 const router = createBrowserRouter([
   {
@@ -54,6 +57,10 @@ const router = createBrowserRouter([
         element:<MyCart></MyCart>
       },
       {
+        path: "payment",
+        element:<Payment></Payment>
+      },
+      {
         path: "addReview",
         element:<AddReview></AddReview>
       },
@@ -73,7 +80,11 @@ const router = createBrowserRouter([
       },
       {
         path: "manageMenu",
-        element: <AdminRoute><h1>Manage Menu</h1></AdminRoute>
+        element: <AdminRoute><ManageMenu></ManageMenu></AdminRoute>
+      },
+      {
+        path: "updateMenu/:id",
+        element: <AdminRoute><UpdateMenu></UpdateMenu></AdminRoute>
       },
       {
         path: "bookings",

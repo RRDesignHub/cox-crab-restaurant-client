@@ -13,6 +13,7 @@ import "swiper/css/pagination";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import testimonial from "../assets/testimonial.jpg";
 import ReactStars from "react-rating-stars-component";
+import { Link } from "react-router-dom";
 export const Testimonial = () => {
   const [clients, setClients] = useState([]);
 
@@ -87,13 +88,13 @@ export const Testimonial = () => {
                     <h4 className="text-[rgba(234,244,255,0.52)] text-lg md:text-xl font-nunito font-bold">
                       {client?.proff}
                     </h4>
-                   
-                      <ReactStars
-                        value={client?.rating}
-                        size={20}
-                        activeColor="#ffd700"
-                      />
-                    
+
+                    <ReactStars
+                      value={client?.rating}
+                      size={20}
+                      activeColor="#ffd700"
+                    />
+
                     <p className="text-[#eaf4ff] italic font-heebo mt-3 w-full max-w-[90%] md:max-w-[500px] mx-auto">
                       <FaQuoteLeft /> {client?.feedback} <FaQuoteRight />
                     </p>
@@ -101,9 +102,11 @@ export const Testimonial = () => {
                 </div>
 
                 {/* Button */}
-                <button className="mb-4 absolute bottom-5 left-1/2 transform -translate-x-1/2 btn bg-[#b6d6fd] uppercase text-[#001735] text-sm md:text-md">
-                  Share Your Experience
-                </button>
+                <Link to='/dashboard/addReview'>
+                  <button className="mb-4 absolute bottom-5 left-1/2 transform -translate-x-1/2 btn bg-[#b6d6fd] uppercase text-[#001735] text-sm md:text-md">
+                    Share Your Experience
+                  </button>
+                </Link>
               </div>
             </SwiperSlide>
           ))}
