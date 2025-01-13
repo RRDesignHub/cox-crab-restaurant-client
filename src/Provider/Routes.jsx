@@ -19,6 +19,8 @@ import { AddMenu } from "../Pages/Dashboard/AddMenu";
 import { ManageMenu } from "../Pages/Dashboard/ManageMenu";
 import { UpdateMenu } from "../Pages/Dashboard/UpdateMenu";
 import { Payment } from "../Pages/Dashboard/Payments/Payment";
+import { PaymentHistory } from "../Pages/Dashboard/Payments/PaymentHistory";
+import { AdminHome } from "../Pages/Dashboard/AdminHome";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +63,10 @@ const router = createBrowserRouter([
         element:<Payment></Payment>
       },
       {
+        path: "paymentHistory",
+        element:<PaymentHistory></PaymentHistory>
+      },
+      {
         path: "addReview",
         element:<AddReview></AddReview>
       },
@@ -72,7 +78,7 @@ const router = createBrowserRouter([
       // admin releted routes
       {
         path: "adminHome",
-        element: <AdminRoute><h1>Admin</h1></AdminRoute>
+        element: <AdminRoute><AdminHome></AdminHome></AdminRoute>
       },
       {
         path: "addMenu",

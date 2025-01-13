@@ -61,7 +61,7 @@ export const MyCart = () => {
             Added Items: {card?.length}
           </h3>
           <h3 className="text-xl font-semibold font-nunito text-[#001735]">
-            Total Price: ${parseInt(totalPrice)}
+            Total Price: ${totalPrice.toFixed(2)}
           </h3>
           {!card.length == 0 ? (
             <Link to="/dashboard/payment">
@@ -98,14 +98,14 @@ export const MyCart = () => {
                         <div className="avatar">
                           <div className="mask mask-squircle h-12 w-12">
                             <img
-                              src={item?.dishImg}
+                              src={item?.menuImg}
                               alt="Avatar Tailwind CSS Component"
                             />
                           </div>
                         </div>
                       </div>
                     </td>
-                    <td className="font-semibold">{item?.dishName}</td>
+                    <td className="font-semibold">{item?.menuName}</td>
                     <td>${item?.price}</td>
                     <th>
                       <button

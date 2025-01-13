@@ -3,7 +3,6 @@ import { SectionHeader } from "./SectionHeader";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useAuth } from "../Hooks/useAuth";
-
 import { useNavigate } from "react-router-dom";
 import { useCard } from "../Hooks/useCard";
 export const PopularDish = () => {

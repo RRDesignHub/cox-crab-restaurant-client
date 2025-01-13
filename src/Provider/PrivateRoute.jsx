@@ -8,6 +8,6 @@ export const PrivateRoute = ({children}) => {
   const location = useLocation();
 
   if (loader) return <LoadingSpin />
-  if (user) return children
-  return <Navigate to='/login' state={location.pathname} />
+  if (user?.email) return children
+  return <Navigate to='/login' state={{ from: location }} />
 }

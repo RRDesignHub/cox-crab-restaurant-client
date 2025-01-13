@@ -6,12 +6,13 @@ import { FaWindowClose } from "react-icons/fa";
 import logo from "./../assets/logo_pro2.png";
 import { useCard } from "../Hooks/useCard";
 import { useAuth } from "../Hooks/useAuth";
+import { useRole } from "../Hooks/useRole";
 export const Navbar = () => {
   const { user, logoutUser } = useAuth();
   const [isOpen, setIsOpne] = useState(false);
   const [openCloseMenu, setOpenCloseMenu] = useState(true);
   const [card] = useCard();
-
+  const [isAdmin] = useRole();
   const handleOpenCloseMenu = (status) => {
     setOpenCloseMenu(!status);
   };
@@ -49,31 +50,50 @@ export const Navbar = () => {
           Menu
         </NavLink>
       </li>
-      <li>
-        <NavLink
-          className={({ isActive }) =>
-            isActive
-              ? "bg-transparent text-blue-50 font-semibold underline focus:bg-transparent"
-              : "text-blue-50 hover:text-[#d5e4fd] hover:underline focus:text-[#4A5568]"
-          }
-          to="/dashboard"
-        >
-          Dashboard
-        </NavLink>
-      </li>
+      {isAdmin && user ? (
+        <li>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "bg-transparent text-blue-50 font-semibold underline focus:bg-transparent"
+                : "text-blue-50 hover:text-[#d5e4fd] hover:underline focus:text-[#4A5568]"
+            }
+            to="/dashboard/adminHome"
+          >
+            Dashboard
+          </NavLink>
+        </li>
+      ) : user ? (
+        <li>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "bg-transparent text-blue-50 font-semibold underline focus:bg-transparent"
+                : "text-blue-50 hover:text-[#d5e4fd] hover:underline focus:text-[#4A5568]"
+            }
+            to="/dashboard/userHome"
+          >
+            Dashboard
+          </NavLink>
+        </li>
+      ) : (
+        ""
+      )}
 
-      <li>
-        <Link to="/dashboard/myCart">
-          <button className="btn bg-[#eaf4ff] text-[#001735]">
-            <HiShoppingCart className="text-xl " />
-            <div className="badge bg-[#001735] text-[#eaf4ff]">
-              {card?.length}
-            </div>
-          </button>
-        </Link>
-      </li>
+      {user && !isAdmin && (
+        <li>
+          <Link to="/dashboard/myCart">
+            <button className="btn bg-[#eaf4ff] text-[#001735]">
+              <HiShoppingCart className="text-xl " />
+              <div className="badge bg-[#001735] text-[#eaf4ff]">
+                {card?.length}
+              </div>
+            </button>
+          </Link>
+        </li>
+      )}
 
-      <li>
+      {/* <li>
         <NavLink
           className={({ isActive }) =>
             isActive
@@ -86,7 +106,7 @@ export const Navbar = () => {
             Book A Table
           </button>
         </NavLink>
-      </li>
+      </li> */}
 
       {user ? (
         <>

@@ -61,22 +61,23 @@ export const Register = () => {
     const email = form.email.value;
     const photoUrl = form.photoUrl.value;
     const password = form.password.value;
-    
+
     authRegister(email, password)
-    .then(result =>{
-      setUser(result.user);
-      toast.success(`${name} successfully registered!`)
-      updateUser(name, photoUrl);
-       // Save user data to the database
-    const response = axiosPublic.post("/createUser", {
-      name: name,
-      email:email,
-      photoUrl: photoUrl,
-    });
-      navigate(location.state ? `${location.state}` : "/");
-    }).catch(error =>{
-      handleErrors(error);
-    });
+      .then((result) => {
+        setUser(result.user);
+        toast.success(`${name} successfully registered!`);
+        updateUser(name, photoUrl);
+        // Save user data to the database
+        const response = axiosPublic.post("/createUser", {
+          name: name,
+          email: email,
+          photoUrl: photoUrl,
+        });
+        navigate(location.state?.from?.pathname || "/");
+      })
+      .catch((error) => {
+        handleErrors(error);
+      });
   };
 
   const handleErrors = (error) => {

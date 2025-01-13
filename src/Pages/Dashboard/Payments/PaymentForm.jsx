@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useAxiosSecure } from "../../../Hooks/useAxiosSecure";
 import { useCard } from "../../../Hooks/useCard";
 import { useAuth } from "../../../Hooks/useAuth";
-
+import toast from "react-hot-toast";
 export const PaymentForm = () => {
-  const {user} = useAuth()
+  const { user } = useAuth();
   const axiosSecure = useAxiosSecure();
   const [error, setError] = useState("");
   const [clientSecret, setClientSecrt] = useState("");
@@ -16,10 +16,12 @@ export const PaymentForm = () => {
   const totalPrice = card.reduce((total, item) => total + item?.price, 0);
   useEffect(() => {
     const handlePaymentSecret = async () => {
-      const { data } =await axiosSecure.post("/create-payment-intent", {
-        price: totalPrice,
-      });
-      setClientSecrt(data.clientSecret)
+      if (totalPrice > 0) {
+        const { data } = await axiosSecure.post("/create-payment-intent", {
+          price: totalPrice,
+        });
+        setClientSecrt(data.clientSecret);
+      }
     };
 
     handlePaymentSecret();
@@ -32,14 +34,14 @@ export const PaymentForm = () => {
       return;
     }
 
-    const card = elements.getElement(CardElement);
-    if (card === null) {
+    const payCard = elements.getElement(CardElement);
+    if (payCard === null) {
       return;
     }
 
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: "card",
-      card,
+      card: payCard,
     });
 
     if (error) {
@@ -51,27 +53,42 @@ export const PaymentForm = () => {
     }
 
     // confirm payment:
-    const {paymentIntent, error: confirmError} = await stripe.confirmCardPayment(
-      clientSecret,
-      {
+    const { paymentIntent, error: confirmError } =
+      await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
-          card: card,
+          card: payCard,
           billing_details: {
             email: user?.email || "anonymous",
-            name:  user?.displayName || "anonymous",
+            name: user?.displayName || "anonymous",
           },
         },
-      },
-    ); 
+      });
 
-    if(confirmError){
-      console.log(confirmError)
-    }else{
-      setTransactionId("")
-      console.log("paymentIntent-->", paymentIntent)
-      setTransactionId(paymentIntent?.id)
+    if (confirmError) {
+      console.log(confirmError);
+    } else {
+      setTransactionId("");
+      console.log("paymentIntent-->", paymentIntent);
+      setTransactionId(paymentIntent?.id);
+
+      // save payment details into database:
+      const paymentDetails = {
+        userName: user?.displayName,
+        userEmail: user?.email,
+        transactionId: paymentIntent?.id,
+        price: parseFloat(totalPrice),
+        cardIdes: card.map((item) => item?._id),
+        menuIdes: card.map((item) => item?.menuId),
+        date: new Date(), //convert the date for all region by moments js.
+        status: "pending",
+      };
+
+      const { data } = await axiosSecure.post("/payments", paymentDetails);
+      console.log(data);
+      if (data?.paymentResult?.insertedId) {
+        toast.success("Payment successfull!!!");
+      }
     }
-
   };
   return (
     <form onSubmit={handleSubmit}>
@@ -95,11 +112,15 @@ export const PaymentForm = () => {
       <button
         className="btn bg-[#001735] mt-5 text-blue-50"
         type="submit"
-        disabled={!stripe || !clientSecret}
+        disabled={!stripe || !clientSecret || transactionId}
       >
         Pay
       </button>
-      <p className="text-[#001735]">Your transaction id: {transactionId}</p>
+      {transactionId && (
+        <p className="text-[#001735] py-2">
+          Your transaction id: {transactionId}
+        </p>
+      )}
     </form>
   );
 };

@@ -34,7 +34,7 @@ export const Login = () => {
         setUser(result.user);
         toast.success(`User successfully log in!!!`)
         refetch();
-        navigate(location.state ? `${location.state}` : "/");
+        navigate(location.state?.from?.pathname || "/");
         form.reset();
       })
       .catch((err) => {

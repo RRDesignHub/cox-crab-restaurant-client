@@ -14,9 +14,9 @@ import { useAxiosPublic } from "../Hooks/useAxiosPublic";
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
 export const AuthProvider = ({ children }) => {
-  const [loader, setLoader] = useState(true);
-  const axiosPublic = useAxiosPublic();
   const [user, setUser] = useState(null);
+  const [loader, setLoader] = useState(false);
+  const axiosPublic = useAxiosPublic();
 
   // user registration:
   const authRegister = (email, password) => {
@@ -28,18 +28,18 @@ export const AuthProvider = ({ children }) => {
   const updateUser = async (name, photoURL) => {
     setLoader(true);
     const currentUser = auth.currentUser;
-    if (currentUser) {
-      return updateProfile(currentUser, { displayName: name, photoURL })
-        .then(() => {
-          setUser({
-            ...currentUser,
-            displayName: name,
-            photoURL: photoURL,
-          });
-        })
-        .finally(() => setLoader(false));
+    try {
+      if (currentUser) {
+        await updateProfile(currentUser, { displayName: name, photoURL });
+        setUser({
+          ...currentUser,
+          displayName: name,
+          photoURL: photoURL,
+        });
+      }
+    } finally {
+      setLoader(false);
     }
-    setLoader(false);
   };
 
   // login user with email & password:
@@ -69,12 +69,13 @@ export const AuthProvider = ({ children }) => {
         const { data } = await axiosPublic.post("/jwt", userEmail);
         if (data?.token) {
           localStorage.setItem("access-token", data?.token);
+          setLoader(false);
         }
       } else {
         // remove token from localstorage
         localStorage.removeItem("access-token");
+        setLoader(false);
       }
-      setLoader(false);
     });
     return () => {
       currentSubscriber();
