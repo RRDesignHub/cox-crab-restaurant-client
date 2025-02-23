@@ -46,7 +46,7 @@ npm run dev
 
 #### Server:
 ```sh
-git clone https://github.com/RRDesignHub/cox-crab-restaurant-server.git
+git clone https://github.com/RRDesignHub/cox-crab-server.git
 cd cox-crab-restaurant-server
 npm install
 nodemon index.js
