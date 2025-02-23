@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 const axiosSecure = axios.create({
-  baseURL: "http://localhost:9000",
+  baseURL: "https://cox-crab-server.vercel.app",
 });
 export const useAxiosSecure = () => {
   const { logoutUser } = useAuth();
