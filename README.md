@@ -57,7 +57,7 @@ Create a `.env` file in the server directory and configure the necessary environ
 ```
 PORT=5173
 JWT_SECRET=6afaebb9c28d9e24849fdf38e07725394926545d743185b16c1bf3a513e2790b4283eba08e02b072ecd48a69c6ea5a035c183b9e83764a458df575956d8768ea
-STRIPE_SECRET=sk_test_51Qflq5DNsD0f8PINozVLV43MCjW5Oaq5pYr9nEDdcAQNZhoD11bXDmkofSEW6LBqk7sV8pbvbK96WICe6mc4tec000LnfHR7YI
+
 ```
 
 ---
